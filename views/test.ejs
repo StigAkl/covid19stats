@@ -1,0 +1,81 @@
+<html>
+
+    <head>
+
+        <style>
+        
+        body {
+            margin: 0; 
+            padding: 0; 
+        }
+            .container {
+                width:95%; 
+                margin: 0px auto;  
+            }
+
+            .item {
+                border: 1px solid black; 
+                width: 31%;  
+                padding: 5px; 
+                margin: 0px auto;  
+                margin-top: 10px; 
+                margin-left: 5px; 
+                float: left;
+            }
+
+        </style>
+            <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+
+            <h2>Number of charts: <%= labels.length %> </h2>
+            <script>
+                    const labels = <%- JSON.stringify(labels); %>       
+            </script>
+        
+    </head>
+    
+    <body>
+        <div class="container">
+        <% for (var i = 0; i < labels.length; i++) { %>
+
+            <div class="item">
+            <canvas id="chart<%=i%>"></canvas>    
+            </div>
+
+        <% } %>
+
+
+        </div>
+            <script>
+            labels.forEach((element, i) => {
+                let id = "chart"+i
+                var ctx = document.getElementById(id); 
+
+                let chart = new Chart(ctx, {
+                    type: "line", 
+                    fill: false,
+                    data: {
+                        labels: element,
+                        datasets: [{
+                        fill: false,
+                        label: 'Some Random Data',
+                        borderColor: 'rgb(255, 99, 132)',
+                        data: [0, 10, 5, 2, 231, 20, 30, 45,0, 10, 5, 2, 231, 20, 30, 45],
+                    },
+                    {
+                        label: 'Some Other Random Data',
+                        borderColor: 'rgb(0, 99, 132)',
+                        fill: false,
+                        data: [0, 165, 54, -14, 40, 65, 415]
+                    }]
+                    },
+                    options: {
+                        title: {
+                            display: true, 
+                            text: "Corona Krise"
+                        }
+                    }
+                });
+            });
+            </script>
+    </body>
+</html>
