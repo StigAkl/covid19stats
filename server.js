@@ -31,16 +31,20 @@ app.use(homeRoutes);
 // })
 
 async function fetchData() {
-    setInterval(() => {
         request.get(dataUrl, (error, response, body) => {
             let json = JSON.parse(body); 
             const update = "UPDATE countries SET confirmed_cases=?,confirmed_deaths=? WHERE name='Norway'"
             db.run(update, [json.metadata.confirmed.total, json.metadata.dead.total]); 
-        })
-    },1200000);
+        });
 }
 
 app.listen(port, async () => {
+
     await fetchData();
+
+    setInterval(()=> {
+        console.info("fetching"); 
+        fetchData();
+    }, 1200000)
     console.log("Listening on port 3000"); 
 })
