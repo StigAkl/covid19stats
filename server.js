@@ -4,16 +4,22 @@ const request = require("request");
 const homeRoutes = require("./routes/home");
 const dataUrl = "https://redutv-api.vg.no/corona/v1/sheets/norway-region-data";
 const sqlite3 = require("sqlite3").verbose(); 
+const morgan = require("morgan");
+
+//Configurations
 const dbString = process.env.DATABASE_STRING || "dev_db"; 
-
-const db = new sqlite3.Database(dbString); 
-
 const port = process.env.PORT || 3001;
+const db = new sqlite3.Database(dbString); 
 
 app.set("view engine", "ejs"); 
 
+//Setup middleware
+app.use(morgan("common"));
+
+//Setup routes
 app.use(homeRoutes); 
 
+//ChartJS Test
 app.get("/charts", (req, res, next) => {
     const labels1 = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
     const labels2 = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
