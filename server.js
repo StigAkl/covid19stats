@@ -2,16 +2,22 @@ const express = require("express");
 const app = express(); 
 const request = require("request"); 
 const homeRoutes = require("./routes/home");
-const dataUrl = "https://redutv-api.vg.no/corona/v1/sheets/norway-region-data";
 const sqlite3 = require("sqlite3").verbose(); 
 const morgan = require("morgan");
+const dotenv = require('dotenv');
 
 //Configurations
-const dbString = process.env.DATABASE_STRING || "dev_db"; 
-const port = process.env.PORT || 3001;
+dotenv.config(); 
+const dbString = process.env.DATABASE_STRING || "dev_db";
+const port = process.env.PORT || 5000;
 const db = new sqlite3.Database(dbString); 
+const apiUrl = process.env.API_URL;
 
+
+console.log("Port: " + process.env.PORT); 
+console.log(process.env.DATABASE_STRING); 
 app.set("view engine", "ejs"); 
+console.log(process.env.API_URL); 
 
 //Setup middleware
 app.use(morgan("common"));
@@ -46,8 +52,9 @@ async function createCountriesTableIfNotExist() {
 }
 
 async function fetchData() {
-        request.get(dataUrl, (error, response, body) => {
-            let json = JSON.parse(body); 
+        request.get(apiUrl, (error, response, body) => {
+            let json = JSON.parse(body);
+		console.log(json.metadata.confirmed.total);  
             const update = "UPDATE countries SET confirmed_cases=?,confirmed_deaths=?, last_updated=datetime('now') WHERE name='Norway'"
             db.run(update, [json.metadata.confirmed.total, json.metadata.dead.total]); 
         });
@@ -62,5 +69,5 @@ app.listen(port, async () => {
             fetchData();
         }, 1200000)
     })
-    console.log("Listening on port 3001"); 
+    console.log("Listening on port " + port); 
 })
