@@ -8,7 +8,7 @@ const dbString = process.env.DATABASE_STRING || "dev_db";
 
 const db = new sqlite3.Database(dbString); 
 
-const port = process.env.PORT || 80;
+const port = process.env.PORT || 3001;
 
 app.set("view engine", "ejs"); 
 
