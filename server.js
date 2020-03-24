@@ -46,5 +46,5 @@ app.listen(port, async () => {
         console.info("fetching"); 
         fetchData();
     }, 1200000)
-    console.log("Listening on port 3000"); 
+    console.log("Listening on port 3001"); 
 })
