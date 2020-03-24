@@ -36,21 +36,31 @@ app.get("/charts", (req, res, next) => {
     ]})
 })
 
+async function createCountriesTableIfNotExist() {
+    const create = "CREATE TABLE IF NOT EXISTS countries(name TEXT PRIMARY KEY, confirmed_cases INTEGER, total_population INTEGER, confirmed_deaths INTEGER, last_updated TEXT)";
+    const insert = "INSERT INTO countries(name, confirmed_cases, total_population, confirmed_deaths, last_updated) VALUES('Norway', 2500, 5368000, 12, datetime('now'))";
+
+    //db.run(create); 
+
+    //db.run(insert);
+}
+
 async function fetchData() {
         request.get(dataUrl, (error, response, body) => {
             let json = JSON.parse(body); 
-            const update = "UPDATE countries SET confirmed_cases=?,confirmed_deaths=? WHERE name='Norway'"
+            const update = "UPDATE countries SET confirmed_cases=?,confirmed_deaths=?, last_updated=datetime('now') WHERE name='Norway'"
             db.run(update, [json.metadata.confirmed.total, json.metadata.dead.total]); 
         });
 }
 
 app.listen(port, async () => {
 
-    await fetchData();
-
-    setInterval(()=> {
-        console.info("fetching"); 
-        fetchData();
-    }, 1200000)
+    await createCountriesTableIfNotExist().then( async () => {
+        await fetchData();
+        setInterval(()=> {
+            console.info("fetching"); 
+            fetchData();
+        }, 1200000)
+    })
     console.log("Listening on port 3001"); 
 })
