@@ -2,8 +2,10 @@ const express = require("express");
 const router = express.Router(); 
 const sqlite = require("sqlite3").verbose(); 
 const dbString = process.env.DATABASE_STRING || "dev_db"; 
+const dotenv = require("dotenv"); 
 
-const db = new sqlite.Database(dbString); 
+dotenv.config(); 
+const db = new sqlite.Database(process.env.DATABASE_STRING); 
 
 router.get("/", async (req, res) => {
 
@@ -16,6 +18,7 @@ router.get("/", async (req, res) => {
             res.status(500).send("Internal server error"); 
             throw err; 
         }
+ 
         const confirmed_cases = row.confirmed_cases; 
         const confirmed_deaths = row.confirmed_deaths; 
 
