@@ -8,16 +8,12 @@ const dotenv = require('dotenv');
 
 //Configurations
 dotenv.config(); 
-const dbString = process.env.DATABASE_STRING || "dev_db";
+const dbString = process.env.DATABASE_STRING;
 const port = process.env.PORT || 5000;
 const db = new sqlite3.Database(dbString); 
 const apiUrl = process.env.API_URL;
-
-
-console.log("Port: " + process.env.PORT); 
-console.log(process.env.DATABASE_STRING); 
-app.set("view engine", "ejs"); 
-console.log(process.env.API_URL); 
+ 
+app.set("view engine", "ejs");  
 
 //Setup middleware
 app.use(morgan("common"));
@@ -64,8 +60,7 @@ app.listen(port, async () => {
 
     await createCountriesTableIfNotExist().then( async () => {
         await fetchData();
-        setInterval(()=> {
-            console.info("fetching"); 
+        setInterval(()=> { 
             fetchData();
         }, 1200000)
     })
