@@ -2,12 +2,8 @@ const express = require("express");
 const router = express.Router(); 
 const sqlite = require("sqlite3").verbose(); 
 const dotenv = require("dotenv"); 
+dotenv.config();  
 
-dotenv.config(); 
-const dbString = process.env.DATABASE_STRING || "dev_db"; 
-const dotenv = require("dotenv"); 
-
-dotenv.config(); 
 const db = new sqlite.Database(process.env.DATABASE_STRING); 
 
 router.get("/", async (req, res) => {
