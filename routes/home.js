@@ -1,16 +1,18 @@
 const express = require("express"); 
 const router = express.Router(); 
 const sqlite = require("sqlite3").verbose(); 
+const dotenv = require("dotenv"); 
+
+dotenv.config(); 
 const dbString = process.env.DATABASE_STRING || "dev_db"; 
 
 const db = new sqlite.Database(dbString); 
 
 router.get("/", async (req, res) => {
 
-    await db.run('CREATE TABLE IF NOT EXISTS countries (name TEXT PRIMARY KEY, confirmed_cases INTEGER, total_population INTEGER, confirmed_deaths INTEGER)');
-
     let sql = `SELECT * FROM countries WHERE name='Norway'`;
-
+    let time_series_sql_confirmed = `SELECT * FROM timeseries_total_confirmed WHERE country='Norway'`;
+    let time_series_sql_dead = `SELECT * FROM timeseries_total_dead WHERE country='Norway'`;
     db.get(sql, [], (err, row) => {
         if(err) {
             res.status(500).send("Internal server error"); 
@@ -19,7 +21,25 @@ router.get("/", async (req, res) => {
         const confirmed_cases = row.confirmed_cases; 
         const confirmed_deaths = row.confirmed_deaths; 
 
-        res.render("index", {confirmed_cases: confirmed_cases, confirmed_deaths: confirmed_deaths}); 
+        db.all(time_series_sql_dead, (err, rows) => {
+            if(err) {
+                res.status(500).send("Internal server error"); 
+                throw err; 
+            }
+
+            const timeseries_dead = rows; 
+
+            db.all(time_series_sql_confirmed, (err, rows) => {
+                if(err) {
+                    res.status(500).send("Internal server error"); 
+                    throw err; 
+                }
+
+                const timeseries_confirmed = rows; 
+                console.log(timeseries_confirmed)
+                res.render("index", {confirmed_cases: confirmed_cases, confirmed_deaths: confirmed_deaths, timeseries_confirmed: timeseries_confirmed, timeseries_dead: timeseries_dead});  
+            })
+        })
         
     })
 });

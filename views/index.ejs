@@ -21,7 +21,7 @@
 
         .container {
             margin: 0 auto; 
-            width: 50%; 
+            width: 80%; 
             margin-top: 15px;  
         }
 
@@ -30,9 +30,20 @@
             font-family: "Times New Roman", Times, serif;
             text-align: center; 
         }
+
+        .chart_overview {
+            width: 50%; 
+            float: left; 
+        }
         
         </style>
 
+
+        <script>
+                const timeseries_dead = <%- JSON.stringify(timeseries_dead); %>   
+                const timeseries_confirmed = <%- JSON.stringify(timeseries_confirmed); %>
+
+        </script>
     </head>
     <body>
 
@@ -41,7 +52,86 @@
             <div class="total_cases_confirmed">
                 <h1>Antall bekreftede smittet: <%=confirmed_cases%></h1>
             </div>
+
+            <div class="chart_overview">
+                <canvas id="confirmed"></canvas>
+            </div>
+            <div class="chart_overview">
+                <canvas id="dead"></canvas>
+            </div>
         </div>
+
+
+        <script>
+
+
+            let labels = timeseries_confirmed.map((elm) => {    
+                let splitDate = elm.date.split("-");
+                return splitDate[2] + "." + splitDate[1];  
+            }); 
+            let data_dead = timeseries_dead.map((elm) => elm.total); 
+            let data_confirmed = timeseries_confirmed.map((elm) => elm.total); 
+
+                var ctx_confirmed = document.getElementById("confirmed"); 
+                var ctx_dead = document.getElementById("dead")
+
+
+                let confirmed_chart = new Chart(ctx_confirmed, {
+                    type: "line", 
+                    fill: false,
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                        fill: false,
+                        label: 'Antall smittet over tid',
+                        backgroundColor: 'rgb(255, 99, 132)',
+                        borderColor: 'rgb(255, 99, 132)',
+                        data: data_confirmed
+                    }]
+                    },
+                    options: {
+                        aspectRatio: 1.4,
+                        responsive: true,
+                        responsiveAnimationDuration: 2,
+                        title: {
+                            display: true, 
+                            text: "Antall bekreftede COVID-19 smittede personer over tid i Norge",
+                            fontSize: 18
+                        }
+                    }
+                    
+                });
+
+                let dead_chart = new Chart(ctx_dead, {
+                    type: "line", 
+                    fill: true,
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                        fill: false,
+                        label: 'Antall døde over tid',
+                        backgroundColor: 'rgb(0, 99, 132)',
+                        borderColor: 'rgb(0, 99, 132)',
+                        data: data_dead
+                    }]
+                    },
+                    options: {
+                        aspectRatio: 1.4,
+                        responsive: true,
+                        responsiveAnimationDuration: 2,
+                        title: {
+                            display: true, 
+                            text: "Corona Krise",
+                            text: "Antall døde personer som følge av COVID-19 smitte",
+                            fontSize: 18
+                        }
+                    }
+                    
+                });
+
+                
+            </script>
+
 
     </body>
 </html>
