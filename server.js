@@ -20,7 +20,7 @@ app.use(homeRoutes);
 //     const labels3 = ['Monday', "Tuesday", "Wednesday", "Thursday", "Friday", "Saturydag", "Sunday"];
 //     const labels4 = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
 //     const labels5 = ['Monday', "Tuesday", "Wednesday", "Thursday", "Friday", "Saturydag", "Sunday"];
-//     const labels6 = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+// f    const labels6 = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
 //     const labels7 = ['Monday', "Tuesday", "Wednesday", "Thursday", "Friday", "Saturydag", "Sunday"];
 //     const labels8 = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
 //     const labels9 = ['Monday', "Tuesday", "Wednesday", "Thursday", "Friday", "Saturydag", "Sunday"];
