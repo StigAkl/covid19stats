@@ -112,7 +112,6 @@
                     options: {
 		        scales: {
                         xAxes: [{
-			type: 'time',
 			    ticks: {
 				autoSkip: true,
 				maxTicksLimit: 20
@@ -147,8 +146,12 @@
                     }]
                     },
                     options: {
-			scales: {
+		        scales: {
                         xAxes: [{
+			    ticks: {
+				autoSkip: true,
+				maxTicksLimit: 20
+			    },
                             gridLines: {
                                 color: "rgba(0, 0, 0, 0)",
                             }
