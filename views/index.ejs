@@ -4,13 +4,13 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title></title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="">
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-        <title>Statistikk - Covid19</title>
-
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+        <title>Covid-19 Norsk Statistikk</title>
         <style>
         
 
@@ -19,22 +19,17 @@
             margin: 0; 
         }
 
-        .container {
-            margin: 0 auto; 
-            width: 80%; 
-            margin-top: 15px;  
-        }
-
         .total_cases_confirmed {
             color: rgb(122, 106, 106); 
             font-family: "Times New Roman", Times, serif;
             text-align: center; 
         }
 
-        .chart_overview {
-            width: 50%; 
-            float: left; 
+        .graph_box {
+            width: 100%;
+            margin-top: 2.5rem; 
         }
+
         
         </style>
 
@@ -48,9 +43,22 @@
     <body>
 
            
-        <div class="container">
+        <div class="container-fluid">
             <div class="total_cases_confirmed">
                 <h1>Antall bekreftede smittet: <%=confirmed_cases%></h1>
+            </div>
+
+            <div class="row">
+                <div class="col-md">
+                    <div class="graph_box">
+                        <canvas id="confirmed"></canvas>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="graph_box">
+                        <canvas id="dead"></canvas>
+                    </div>
+                </div>
             </div>
 
             <div class="chart_overview">
@@ -90,7 +98,7 @@
                     }]
                     },
                     options: {
-                        aspectRatio: 1.4,
+                        aspectRatio: 1.3,
                         responsive: true,
                         responsiveAnimationDuration: 2,
                         title: {
@@ -116,7 +124,7 @@
                     }]
                     },
                     options: {
-                        aspectRatio: 1.4,
+                        aspectRatio: 1.3,
                         responsive: true,
                         responsiveAnimationDuration: 2,
                         title: {
