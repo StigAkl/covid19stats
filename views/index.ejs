@@ -109,7 +109,35 @@
                         data: data_confirmed
                     }]
                     },
-                    options: {
+ 		options: {
+		  tooltips: {
+		    mode: "single",
+		    callbacks: {
+		      label: function(tooltipItem, data) {
+			return null;
+		      },
+
+		      afterBody: function(tooltipItem, data) {
+			const index = tooltipItem[0].index;
+
+			const newSinceDayBefore =
+			  index > 0
+			    ? tooltipItem[0].yLabel - data.datasets[0].data[index - 1]
+			    : 0;
+
+			let label = ["Antall smittede: " + tooltipItem[0].yLabel];
+			label.push("Nye tilfeller denne dagen: " + newSinceDayBefore);
+			return label;
+		      },
+
+		      labelColor: function(tooltipItem, chart) {
+			return {
+			  borderColor: "rgba(0,0,0,0)",
+			  backgroundColor: "rgba(0,0,0,0)"
+			};
+		      }
+		    }
+		  },
 		        scales: {
                         xAxes: [{
 			    ticks: {
