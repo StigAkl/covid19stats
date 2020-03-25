@@ -35,7 +35,6 @@ router.get("/", async (req, res) => {
                 }
 
                 const timeseries_confirmed = rows; 
-                console.log(timeseries_confirmed)
                 res.render("index", {confirmed_cases: confirmed_cases, confirmed_deaths: confirmed_deaths, timeseries_confirmed: timeseries_confirmed, timeseries_dead: timeseries_dead});  
             })
         })
