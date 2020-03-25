@@ -38,31 +38,82 @@ app.get("/charts", (req, res, next) => {
     ]})
 })
 
-async function createCountriesTableIfNotExist() {
-    const create = "CREATE TABLE IF NOT EXISTS countries(name TEXT PRIMARY KEY, confirmed_cases INTEGER, total_population INTEGER, confirmed_deaths INTEGER, last_updated TEXT)";
-    const insert = "INSERT INTO countries(name, confirmed_cases, total_population, confirmed_deaths, last_updated) VALUES('Norway', 2500, 5368000, 12, datetime('now'))";
-
-    //db.run(create); 
-
-    //db.run(insert);
-}
-
 async function fetchData() {
         request.get(apiUrl, (error, response, body) => {
             let json = JSON.parse(body);
-		console.log(json.metadata.confirmed.total);  
+
+            const confirmed = json.timeseries.total.confirmed;
+            const dead = json.timeseries.total.dead; 
+
+            const lastDate = Object.keys(confirmed)[Object.keys(confirmed).length-1];
+            const yesterday = Object.keys(confirmed)[Object.keys(confirmed).length-2];
+            const totalYesterday = confirmed[yesterday]; 
+            const totalDeadYesterday = dead[yesterday]; 
+
+            db.get("SELECT * FROM timeseries_total_confirmed WHERE date=?", [lastDate], (err, row) => {
+                if(err) {
+                    throw err; 
+                }
+
+                let sql = "INSERT INTO timeseries_total_confirmed(country, total, date) VALUES('Norway',?,?)"
+                let sql_dead = "INSERT INTO timeseries_total_dead(country, total, date) VALUES('Norway',?,?)"
+
+                let inputData = [json.metadata.confirmed.total, lastDate]; 
+                let inputDataDead = [json.metadata.dead.total, lastDate]; 
+
+                console.log(inputDataDead)
+                console.log(totalDeadYesterday)
+                let newRow = true; 
+                if(row) {
+                    sql = "UPDATE timeseries_total_confirmed SET total=? WHERE date=?";
+                    sql_dead = "UPDATE timeseries_total_dead SET total=? WHERE date=?";
+                    newRow = false; 
+                }
+
+                db.run(sql, inputData, (err, rows) => {
+                    if(err) {
+                        throw err; 
+                    }
+                    console.log("inserted timeseries row to confirmed"); 
+                    db.run(sql_dead, inputDataDead, (err, row) => {
+                        if(err) {
+                            throw err; 
+                        }
+
+                        console.log("inserted timeseries row to dead"); 
+                    })
+
+
+                    //Check that the data from yesterday is updated. Update if not. 
+                    if(newRow) {
+                        db.get("SELECT * FROM timeseries_total_confirmed WHERE date=?", [yesterday], (err, row) => {
+                                if(totalYesterday > row.total) {
+                                    console.log("Diff")
+                                     db.run("UPDATE timeseries_total_confirmed SET total=? WHERE date=?", [totalYesterday, yesterday], (err, row) => {
+                                        // db.run("UPDATE timeseries_total_dead SET total=? WHERE date=?", [totalDeadYesterday, yesterday], (err, row) => {
+                                        //     console.log("Updated database with time series for dead and confirmed"); 
+                                        // });
+                                    });
+                                }
+                        })
+                    }
+                }); 
+            })
+
+            
+
             const update = "UPDATE countries SET confirmed_cases=?,confirmed_deaths=?, last_updated=datetime('now') WHERE name='Norway'"
+
             db.run(update, [json.metadata.confirmed.total, json.metadata.dead.total]); 
         });
 }
 
 app.listen(port, async () => {
 
-    await createCountriesTableIfNotExist().then( async () => {
         await fetchData();
         setInterval(()=> { 
             fetchData();
-        }, 1200000)
-    })
+        }, 1200000);
+
     console.log("Listening on port " + port); 
 })
