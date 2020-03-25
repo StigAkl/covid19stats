@@ -86,7 +86,6 @@ async function fetchData() {
                     if(newRow) {
                         db.get("SELECT * FROM timeseries_total_confirmed WHERE date=?", [yesterday], (err, row) => {
                                 if(totalYesterday > row.total) {
-                                    console.log("Diff")
                                      db.run("UPDATE timeseries_total_confirmed SET total=? WHERE date=?", [totalYesterday, yesterday], (err, row) => {
                                          db.run("UPDATE timeseries_total_dead SET total=? WHERE date=?", [totalDeadYesterday, yesterday], (err, row) => {
                                              console.log("Updated database with time series for dead and confirmed"); 
