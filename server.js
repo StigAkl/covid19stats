@@ -59,6 +59,8 @@ async function fetchData() {
                     await StatisticsDAO.InsertConfirmedTimeSeriesEntry("Norway", inputDataConfirmed[0], inputDataConfirmed[1])
                 }
 
+                console.log("Data fetched and updated"); 
+
             } catch(err) {
                console.err("Error fetching data from api", err); 
             }
@@ -70,7 +72,7 @@ app.listen(port, async () => {
         await fetchData();
         setInterval(()=> { 
             fetchData();
-        }, 1200000);
+        }, 1000*20*60);
 
     console.log("Listening on port " + port); 
 })
