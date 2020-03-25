@@ -23,11 +23,15 @@
             color: rgb(122, 106, 106); 
             font-family: "Times New Roman", Times, serif;
             text-align: center; 
+            margin-top: 2.5rem; 
         }
 
-        .graph_box {
-            width: 100%;
-            margin-top: 2.5rem; 
+
+        .graph_container {
+            width: 80%; 
+            margin: 0 auto;
+            margin-top: 3.5rem;
+            box-shadow: 5px 4px 10px 4px rgba(0, 0, 0, 0.233);
         }
 
         
@@ -48,15 +52,15 @@
                 <h1>Antall bekreftede smittet: <%=confirmed_cases%></h1>
             </div>
 
-            <div class="row">
-                <div class="col-md">
-                    <div class="graph_box">
+            <div class="graph_container">
+                <div class="row">
+                    <div class="col-md">
                         <canvas id="confirmed"></canvas>
                     </div>
-                </div>
-                <div class="col-md">
-                    <div class="graph_box">
-                        <canvas id="dead"></canvas>
+                    <div class="col-md">
+                        <div class="graph_box">
+                            <canvas id="dead"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>
