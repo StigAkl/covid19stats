@@ -90,11 +90,11 @@
 
                 let confirmed_chart = new Chart(ctx_confirmed, {
                     type: "line", 
-                    fill: false,
+                    fill: true,
                     data: {
                         labels: labels,
                         datasets: [{
-                        fill: false,
+                        fill: true,
                         label: 'Antall smittet over tid',
                         backgroundColor: 'rgb(255, 99, 132)',
                         borderColor: 'rgb(255, 99, 132)',
@@ -116,11 +116,10 @@
 
                 let dead_chart = new Chart(ctx_dead, {
                     type: "line", 
-                    fill: true,
                     data: {
                         labels: labels,
                         datasets: [{
-                        fill: false,
+                        fill: true,
                         label: 'Antall døde over tid',
                         backgroundColor: 'rgb(0, 99, 132)',
                         borderColor: 'rgb(0, 99, 132)',
