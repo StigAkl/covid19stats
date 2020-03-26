@@ -49,7 +49,7 @@ class StatisticsRepository {
     }
 
     async InsertDeathsTimeSeriesEntry(country, total, date) {
-        const SQL = "INSERT INTO timeseries_total_dead(country, total, date) VALUES('Norway',?,?)"; 
+        const SQL = "INSERT INTO timeseries_total_dead(country, total, date) VALUES(?,?,?)"; 
         return await this.dao.run(SQL, [country, total, date]); 
     }
 
