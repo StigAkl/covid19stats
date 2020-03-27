@@ -17,15 +17,18 @@ app.use(bodyParser.urlencoded( { extended: false }))
 app.post("/".concat(appPrivateKey), (req, res) => {
 console.log("God you"); 
 
-    exec('sh ./deploy/work.sh',
+    exec('./deploy/work.sh',
 	(error, stdout, stderr) => {
 	console.log("working..");  
            console.log(stdout); 
            console.log(stderr); 
            console.log("Still working.."); 
            if(error !== null) {
-		console.log(`exec error: ${error}`); 
+		console.log(`exec error: ${error}`);
+               res.status(500).send("Error: ", error); 
 	   }
+
+       res.status(200).send("Ok"); 
 	}
 ) 
 });

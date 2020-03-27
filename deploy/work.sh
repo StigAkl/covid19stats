@@ -3,14 +3,12 @@ set -x
 
 . /root/covid19stats/config/deploy.conf
 
-APP_DIR=$GIT_REPO
-
 ### Automatic steps ###
-if [[ -e $APP_DIR ]]; then
-  cd $APP_DIR
-  git pull
-fi
 
+if [[ -e $APP_DIR ]]; then
+    cd $APP_DIR
+    git pull
+fi
 
 # Install dependencies
 npm install --production
