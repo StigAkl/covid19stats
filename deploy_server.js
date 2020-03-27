@@ -16,7 +16,7 @@ app.use(bodyParser.urlencoded( { extended: false }))
 
 app.post("/".concat(appPrivateKey), (req, res) => {
 
-    exec('./deploy/work.sh',
+    exec('.'.concat(deployDirectory,deployFile),
 	(error, stdout, stderr) => {
            console.log(stdout); 
            console.log(stderr); 
@@ -30,7 +30,7 @@ app.post("/".concat(appPrivateKey), (req, res) => {
 ) 
 });
 
-app.listen(3002, () => {
+app.listen(PORT, () => {
 console.log("Listening on 3002"); 
 }); 
 
