@@ -1,3 +1,4 @@
+require('log-timestamp'); 
 const express = require("express"); 
 const app = express(); 
 const request = require("request"); 
@@ -13,7 +14,6 @@ const dbString = process.env.DATABASE_STRING;
 const port = process.env.PORT || 5000;
 const apiUrl = process.env.API_URL;
 const StatisticsDAO = new StatisticsRepository(new AppDao(dbString)); 
- 
 app.set("view engine", "ejs");  
 
 //Setup middleware
@@ -55,14 +55,17 @@ async function fetchData() {
                     }
 
                 } else {
-                    await StatisticsDAO.InsertDeathsTimeSeriesEntry("Norway", inputDataDead[0], inputDataDead[1])
-                    await StatisticsDAO.InsertConfirmedTimeSeriesEntry("Norway", inputDataConfirmed[0], inputDataConfirmed[1])
+                    const date = inputDataDead[1].split("-"); 
+                    if(date.length >= 3 && parseInt(date[2]) == new Date().getDate()) {
+                        await StatisticsDAO.InsertDeathsTimeSeriesEntry("Norway", inputDataDead[0], inputDataDead[1])
+                        await StatisticsDAO.InsertConfirmedTimeSeriesEntry("Norway", inputDataConfirmed[0], inputDataConfirmed[1])
+                    } 
                 }
 
                 console.log("Data fetched and updated"); 
 
             } catch(err) {
-               console.err("Error fetching data from api", err); 
+               console.error("Error fetching data from api", err); 
             }
         });
 }

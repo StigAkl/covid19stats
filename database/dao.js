@@ -1,5 +1,5 @@
+require('log-timestamp'); 
 const sqlite3 = require("sqlite3"); 
-
 
 class AppDAO {
     constructor(dbFilePath) {
