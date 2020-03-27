@@ -41,7 +41,7 @@ async function fetchData() {
 
                 let inputDataConfirmed = [json.metadata.confirmed.total, lastDate]; 
                 let inputDataDead = [json.metadata.dead.total, lastDate]; 
-                
+
                 if(confirmedTimeSeriesLastDate) {
                     await StatisticsDAO.UpdateDeathsTimeSeries(inputDataDead[0], inputDataDead[1]);
                     await StatisticsDAO.UpdateConfirmedTimeSeries(inputDataConfirmed[0], inputDataConfirmed[1]);
@@ -59,7 +59,7 @@ async function fetchData() {
                     if(date.length >= 3 && parseInt(date[2]) == new Date().getDate()) {
                         await StatisticsDAO.InsertDeathsTimeSeriesEntry("Norway", inputDataDead[0], inputDataDead[1])
                         await StatisticsDAO.InsertConfirmedTimeSeriesEntry("Norway", inputDataConfirmed[0], inputDataConfirmed[1])
-                    } 
+                    }
                 }
 
                 console.log("Data fetched and updated"); 
