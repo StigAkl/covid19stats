@@ -16,7 +16,7 @@ app.use(bodyParser.urlencoded( { extended: false }))
 
 app.post("/".concat(appPrivateKey), (req, res) => {
 
-    exec('./'.concat(deployDirectory,deployFile),
+    exec('.'.concat(deployDirectory,deployFile),
 	(error, stdout, stderr) => {
            console.log(stdout); 
            console.log(stderr); 
