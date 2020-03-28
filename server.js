@@ -18,6 +18,7 @@ app.set("view engine", "ejs");
 
 //Setup middleware
 app.use(morgan("common"));
+app.use(express.static('public'))
 
 //Setup routes
 app.use(homeRoutes); 
